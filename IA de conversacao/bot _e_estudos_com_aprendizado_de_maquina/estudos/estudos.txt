@@ -1,0 +1,189 @@
+O que é NLP?
+Processamento de Linguagem Natural (NLP) é a área da inteligência artificial que ajuda as máquinas a entenderem, interpretarem e responderem em linguagem humana.
+
+No NLP, realizamos tarefas como:
+
+Tokenização: Dividir texto em palavras ou frases.
+Remoção de palavras irrelevantes: Como "a", "de", "o".
+Lematização ou radicalização: Reduzir palavras às suas formas básicas (ex.: "correndo" vira "correr").
+
+===
+
+Passo 1: Instalando bibliotecas para NLP
+Vamos usar a biblioteca nltk (Natural Language Toolkit), amplamente utilizada para NLP em Python.
+
+1. Baixe os recursos necessários:
+No seu script, inclua:
+
+import nltk
+nltk.download('punkt')  # Tokenização
+nltk.download('stopwords')  # Palavras irrelevantes
+
+=======
+
+Passo 2 - cod-1: Pré-processando o texto
+O objetivo aqui é limpar o texto do usuário para facilitar a análise.
+
+Exemplo de pré-processamento:
+
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+
+def preprocessar_texto(texto):
+    # Converte para letras minúsculas
+    texto = texto.lower()
+    # Tokeniza o texto (divide em palavras)
+    palavras = word_tokenize(texto)
+    # Remove palavras irrelevantes
+    palavras_irrelevantes = set(stopwords.words('portuguese'))
+    palavras_processadas = [p for p in palavras if p not in palavras_irrelevantes and p.isalnum()]
+    return palavras_processadas
+
+# Testando o pré-processamento
+texto_usuario = "Olá, tudo bem? Meu nome é João!"
+print(preprocessar_texto(texto_usuario))  # Saída: ['olá', 'bem', 'nome', 'joão']
+
+Passo 3: Reconhecendo Intenções Simples
+Agora que sabemos como processar texto, podemos criar um chatbot que reconhece intenções.
+
+continuacao:
+
+def reconhecer_intencao(palavras):
+    if "nome" in palavras:
+        return "Ah, você quer falar sobre nomes!"
+    elif "bem" in palavras or "tudo" in palavras:
+        return "Estou feliz que esteja tudo bem!"
+    elif "adeus" in palavras:
+        return "Tchau, até a próxima!"
+    else:
+        return "Desculpe, não entendi. Pode explicar melhor?"
+
+# Chatbot com pré-processamento
+while True:
+    mensagem = input("Você: ")
+    palavras = preprocessar_texto(mensagem)
+    resposta = reconhecer_intencao(palavras)
+    print(f"Chatbot: {resposta}")
+    if "adeus" in palavras:
+        break
+
+explicacao do passo 2
+
+
+======
+
+Ótimo! Agora que você compreendeu bem o código do pré-processamento de texto e como ele funciona, vamos avançar para a próxima etapa na criação do seu bot de conversa. Essa etapa é crucial: representação dos dados. Vamos transformar o texto processado em algo que uma máquina consiga entender e trabalhar.
+
+Passo 3: Representação dos Dados com Vetorização
+Para que o modelo de IA possa "entender" o texto, precisamos converter as palavras em uma representação numérica. Existem várias técnicas para isso. Aqui, vamos explorar o método Bag of Words (BoW), que é simples e eficiente.
+
+O que é Bag of Words (BoW)?
+BoW cria um vetor (uma lista de números) para representar um texto.
+Cada número no vetor representa a frequência de uma palavra específica no texto.
+A ordem das palavras não importa; apenas se elas aparecem e quantas vezes.
+Exemplo Teórico:
+Imagine os textos abaixo:
+
+Texto 1: "Olá, tudo bem?"
+Texto 2: "Tudo ótimo, olá!"
+Se criarmos um vocabulário com as palavras: ["olá", "tudo", "bem", "ótimo"], o BoW seria:
+
+Texto 1: [1, 1, 1, 0] (uma ocorrência de "olá", "tudo", e "bem"; nenhuma de "ótimo").
+Texto 2: [1, 1, 0, 1] (uma ocorrência de "olá", "tudo", e "ótimo"; nenhuma de "bem").
+
+Código Prático (Bag of Words com CountVectorizer):
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Lista de textos processados
+textos = [
+    "olá tudo bem",
+    "tudo ótimo olá",
+    "como você está",
+    "estou bem obrigado"
+]
+
+# Cria o modelo de Bag of Words
+vetorizador = CountVectorizer()
+
+# Treina o modelo com os textos
+matriz_vetorizada = vetorizador.fit_transform(textos)
+
+# Mostra o vocabulário criado
+print("Vocabulário:", vetorizador.get_feature_names_out())
+
+# Mostra a matriz de Bag of Words
+print("Matriz Vetorizada:\n", matriz_vetorizada.toarray())
+
+
+Ótimo! Agora que você compreendeu bem o código do pré-processamento de texto e como ele funciona, vamos avançar para a próxima etapa na criação do seu bot de conversa. Essa etapa é crucial: representação dos dados. Vamos transformar o texto processado em algo que uma máquina consiga entender e trabalhar.
+
+Passo 3: Representação dos Dados com Vetorização
+Para que o modelo de IA possa "entender" o texto, precisamos converter as palavras em uma representação numérica. Existem várias técnicas para isso. Aqui, vamos explorar o método Bag of Words (BoW), que é simples e eficiente.
+
+O que é Bag of Words (BoW)?
+BoW cria um vetor (uma lista de números) para representar um texto.
+Cada número no vetor representa a frequência de uma palavra específica no texto.
+A ordem das palavras não importa; apenas se elas aparecem e quantas vezes.
+Exemplo Teórico:
+Imagine os textos abaixo:
+
+Texto 1: "Olá, tudo bem?"
+Texto 2: "Tudo ótimo, olá!"
+Se criarmos um vocabulário com as palavras: ["olá", "tudo", "bem", "ótimo"], o BoW seria:
+
+Texto 1: [1, 1, 1, 0] (uma ocorrência de "olá", "tudo", e "bem"; nenhuma de "ótimo").
+Texto 2: [1, 1, 0, 1] (uma ocorrência de "olá", "tudo", e "ótimo"; nenhuma de "bem").
+Código Prático (Bag of Words com CountVectorizer):
+python
+Copy
+Edit
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Lista de textos processados
+textos = [
+    "olá tudo bem",
+    "tudo ótimo olá",
+    "como você está",
+    "estou bem obrigado"
+]
+
+# Cria o modelo de Bag of Words
+vetorizador = CountVectorizer()
+
+# Treina o modelo com os textos
+matriz_vetorizada = vetorizador.fit_transform(textos)
+
+# Mostra o vocabulário criado
+print("Vocabulário:", vetorizador.get_feature_names_out())
+
+# Mostra a matriz de Bag of Words
+print("Matriz Vetorizada:\n", matriz_vetorizada.toarray())
+
+
+
+Explicação do Código:
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+Importa a ferramenta para criar a representação Bag of Words.
+
+textos
+Lista de textos já processados. Eles foram transformados em letras minúsculas, sem pontuação ou palavras irrelevantes.
+
+vetorizador = CountVectorizer()
+Cria o modelo que converte os textos em vetores de frequência.
+
+vetorizador.fit_transform(textos)
+Treina o modelo com os textos fornecidos e cria a matriz BoW.
+Cada linha da matriz representa um texto, e cada coluna representa uma palavra do vocabulário.
+
+vetorizador.get_feature_names_out()
+Exibe o vocabulário criado. É a lista de todas as palavras únicas encontradas nos textos.
+
+matriz_vetorizada.toarray()
+Converte a matriz vetorizada (armazenada de forma compacta) em um array legível.
+
+explicacao da matriz vetorizada - cod:2
+
+============================================
