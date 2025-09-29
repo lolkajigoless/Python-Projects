@@ -9,7 +9,6 @@ Este repositório contém vários projetos em Python organizados por temas. Cada
 - `pdf com python/` - Projeto sobre fazer PDFs com python.
 - `pygame/` - Projetos relacionado com a biblioteca pygame, com alguns jogos feitos e estudos.
 - `IA de conversacao/` - Projeto sobre uma IA que conversa com vc.
-- `saida_ascii` - arquivo que contem uma imagem trasformada em ascii(ASCII art) feita por mim.
 
 ## Contato
 
